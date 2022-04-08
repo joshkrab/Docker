@@ -1,0 +1,53 @@
+# Цей файл для підключення кількох образів
+
+# На докер хабі в документації образа phpmyadmin (будь якого), 
+# трохи нижче є налаштування образа для docker-compose, копіюємо і вставляємо сюди:
+
+# version: '3.1'
+
+services:
+  php:
+    build: ./php # показали на нашу папку з докерфайлом
+    ports:
+      - 8081:80 # Перша цифра - локальні порти повинні відрізнятися
+
+# Назви імеджів можна змінювати
+  db:
+    # image: mariadb:10.3 # Система управління БД
+    # restart: always # щоб проект перезапускався, якщо якось зламається, можно вказати "no"
+    # # Нижче йдуть налаштування образа, вони різні для різних, по типу змінних:
+    # environment:
+    # # Змінюємо пароль з notSecureChangeMe на 12345
+    #   MYSQL_ROOT_PASSWORD: 12345
+
+    image: mysql # змінили тут
+    command: --default-authentication-plugin=mysql_native_password # Додали це
+    restart: always 
+    environment:
+        MYSQL_ROOT_PASSWORD: 12345
+
+  phpmyadmin:
+    image: phpmyadmin # Графічний інтерфейс
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+
+# Потім запуск команд:
+# docker-compose build
+# docker-compose up
+
+# Далі в мене не відкриває локал хост, щось не паше
+# Довелося редагувати файл налаштувань, тоді запрацювало
+# Увійшли там в систему: login:root, pass:12345
+
+# Щоб вийти з проекта в консолі набрали ctrl+c - зупиняє усі контейнери
+
+# Потім змінили образ DB to mysql, я закоментив те, що було, щоб було :)
+
+# Потім знов:
+# docker-compose build
+# docker-compose up
+
+# Потім зверху додали пхп імедж

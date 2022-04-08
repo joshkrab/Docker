@@ -1,0 +1,70 @@
+# Вказуємо версію:
+version: '3'
+
+services:
+  django:
+    # Знайде докерфайл для цього сервіса в корені:
+    build: .
+    # Вказуємо ім'я контейнеру:
+    container_name: django
+    # Команда виконується при будівли цього сервіса: запуск локал сервіса в пітоні
+    command: python manage.py runserver 0.0.0.0:8000
+    # Тома, Зв'язуємо поточну папку з воркдір на хост машині - "поточна:воркдір"
+    volumes:
+      - .:/usr/srs/app
+    # Налаштування портів:
+    ports:
+      - "8000:8000"
+    # Це вказує залежність з БД pgdb:
+    depends_on:
+      - pgdb
+
+  # Під'єднуємо другий сервіс: для джанги завжди йде база даних, може бути різна
+  # Під'єднуємо постгресщосьтам :)
+  pgdb:
+    image: postgres
+    # додаємо змінні:
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    container_name: pgdb 
+    volumes:
+      - pgdbdata:/var/lib/postgresql/data
+
+volumes:
+  pgdbdata: null
+
+
+# В минулий раз ми робили білд, потім ап, зараз запустимо ран з налаштуваннями:
+# Після run запустити джанго, потім команди джанги django-admin startproject, назва проекту joshproger
+# Вказуємо що в поточній папці створюємо проект "."
+# docker-compose run django django-admin startproject joshproger .
+# Після все одно виконуємо up для запуску усіх проектів:
+# docker-compose up
+
+# Після чого термінал залишаєтся в роботі, заходимо на локалхост 8000
+# Потім на локалхост 8000/admin
+
+# Щоб увійти треба створити супер користувача, відкриваємо новий термінал, та пишемо:
+# docker-compose run django python manage.py migrate
+# виконуємо мігрейт - якась міграція файлів, щоб створити супер користовача
+# docker-compose run django python manage.py createsuperuser - сворення суперюзера
+
+# Після вводимо ім'я - admin, пошту пропускаємо ентером, пароль 12345 двічі, натискаємо y, що пароль слабкий
+# Тоді вводимо ці данні на локалхості, та входимо до панелі адміністратора
+
+# Зупинити контейнери:
+# docker-compose down
+# Якщо знову запустити ап, тоді усі налаштування зникнут, щоб не зникли, треба:
+# Дописуємо тома для БД, та тома загальні проекту нижче
+
+# Після удаляємо усі файли окрім трьох перших, та знов запускаємо:
+# docker-compose run django django-admin startproject joshproger .
+# docker-compose up
+# В новому терміналі:
+# docker-compose run django python manage.py migrate
+# docker-compose run django python manage.py createsuperuser 
+
+# Після чого down/up працює зі збереженням налаштуваннь
+# exit - ctrl+c
