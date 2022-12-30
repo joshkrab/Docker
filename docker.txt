@@ -1,0 +1,13 @@
+docker run -d -p 34567:1880 --name ihortest ghcr.io/novaitdevteam/nova.botflow:2022_r4_development_da414554
+
+ngrok token 2JdgmQMdQdQhgwHN4eDLb4d41OP_82AkaUnzQuenjYBcHei6Q
+
+ngrok http http://localhost:34567 - створило тунель і нічого не показало
+На сайті нгрока знайшов адресу:
+
+admin
+ozQ56syBq56SSC7H
+
+https://4f57-77-123-191-14.eu.ngrok.io/
+
+
