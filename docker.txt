@@ -12,3 +12,7 @@ https://4f57-77-123-191-14.eu.ngrok.io/
 
 pktriot http 1880
 
+Install postgress to docker:
+1. In console run: docker pull postgres
+2. Run postress image with port and one variable POSTGRES_PASSWORD=mysecretpassword
+3. In pgadmin add new server with this port and password
